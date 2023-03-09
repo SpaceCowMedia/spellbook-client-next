@@ -1,16 +1,44 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import Link from "next/link"
 import Footer from "../components/layout/Footer/Footer";
 import SearchBar from "../components/SearchBar/SearchBar";
 import styles from './index.module.scss'
 import SpellbookLogo from "../components/layout/SpellbookLogo/SpellbookLogo";
+import RandomButton from "../components/RandomButton/RandomButton";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const router = useRouter()
+  const query = router.query.q ? `${router.query.q}` : ``
+
+  useEffect(() => {
+    const { status, id } = router.query;
+
+    if (Number(query) > 0 || Number(id) > 0) {
+      router.push(`/combo/${id || query}/`);
+      return
+    }
+
+    if (query === "spoiled" || status === "spoiled") {
+      router.push("/search/?q=is:previewed");
+      return
+    }
+
+
+    if (query === "banned" || status === "banned") {
+      router.push("/search/?q=is:banned");
+      return
+    }
+
+
+    if (!query) return
+
+    router.push(`/search/?q=${query}`)
+  }, [])
+
   return (
     <>
       <Head>
@@ -38,9 +66,9 @@ export default function Home() {
                 <Link href="/syntax-guide/" className={`dark ${styles.button} button md:m-1`}>
                   Syntax Guide
                 </Link>
-                {/*  <RandomButton :query="query" class="random-button dark button md:m-1">*/}
-                {/*  Random Combo*/}
-                {/*</RandomButton>*/}
+                  <RandomButton query={query} className={`${styles.button} dark button md:m-1`}>
+                    Random Combo
+                  </RandomButton>
               </div>
 
               <div className="button-links md:flex-row md:w-2/3 m-auto flex flex-col">

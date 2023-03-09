@@ -9,7 +9,7 @@ import TextWithMagicSymbol from "../../layout/TextWithMagicSymbol/TextWithMagicS
 import pluralize from "pluralize";
 
 type Props = {
-  results: SearchResultsState
+  results: SearchResultsState | FormattedApiResponse[]
   paginatedResults: FormattedApiResponse[]
   missingDecklistCards?: Card[]
 }

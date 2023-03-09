@@ -8,6 +8,7 @@ import {SearchResults} from "../lib/types";
 import {DEFAULT_ORDER, DEFAULT_SORT, DEFAULT_VENDOR} from "../lib/constants";
 import SearchPagination from "../components/search/SearchPagination/SearchPagination";
 import ComboResults from "../components/search/ComboResults/ComboResults";
+import NoCombosFound from "../components/layout/NoCombosFound/NoCombosFound";
 
 type Props = {}
 
@@ -38,6 +39,9 @@ const ORDER_OPTIONS: Option[] = [
 
 const Search: React.FC<Props> = ({}: Props) => {
 
+  const [loaded, setLoaded] = useState(false)
+  const [redirecting, setRedirecting] = useState(false)
+
   const [results, setResults] = useState<SearchResultsState>({
     combos: [],
     message: '',
@@ -64,15 +68,16 @@ const Search: React.FC<Props> = ({}: Props) => {
   const updateSearchResults = async (query: string) => {
     const newResults = await search(query)
 
-    // TODO Check if there is only one combo
-    // if (combos.length === 1) {
-    //   this.redirecting = true;
-    //   this.$router.replace({
-    //     path: `/combo/${combos[0].commanderSpellbookId}/`,
-    //     query: { q: query },
-    //   });
-    //   return;
-    // }
+
+    if (newResults.combos.length === 1) {
+      setRedirecting(true)
+      router.replace({
+        pathname: `/combo/${newResults.combos[0].commanderSpellbookId}/`,
+        query: { q: query },
+      })
+      return
+    }
+    setLoaded(true)
     setResults({
       ...newResults,
       page: 1,
@@ -83,6 +88,7 @@ const Search: React.FC<Props> = ({}: Props) => {
   }
 
   useEffect(() => {
+    setLoaded(false)
     updateSearchResults(parseSearchQuery())
   }, [router.query.q])
 
@@ -149,13 +155,15 @@ const Search: React.FC<Props> = ({}: Props) => {
 
 
         <div className="container sm:flex flex-row">
-          {paginatedResults.length > 0 && <div className="w-full">
+          {paginatedResults.length > 0 ?( <div className="w-full">
             <ComboResults results={results}  paginatedResults={paginatedResults} />
 
             <SearchPagination currentPage={page} totalPages={totalPages} aria-hidden="true" onGoForward={goForward} onGoBack={goBack} />
-          </div>}
+          </div>) : <NoCombosFound loaded={false} />
 
-          {/*<NoCombosFound v-else :loaded="loaded && !redirecting" />*/}
+          }
+
+
         </div>
       </div>
     </PageWrapper>
