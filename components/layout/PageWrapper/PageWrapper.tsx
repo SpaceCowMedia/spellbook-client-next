@@ -5,9 +5,10 @@ import styles from './pageWrapper.module.scss'
 
 type Props = {
   children: React.ReactNode
+  noMarginFooter?: boolean
 }
 
-const PageWrapper: React.FC<Props> = ({children}: Props) => {
+const PageWrapper: React.FC<Props> = ({children, noMarginFooter}: Props) => {
   return (
     <div className="flex flex-col h-full">
       <div className="bg-dark">
@@ -20,7 +21,7 @@ const PageWrapper: React.FC<Props> = ({children}: Props) => {
         {children}
       </div>
 
-      <Footer className="mt-24 lg:mt-48 z-0"/>
+      <Footer noMargin={noMarginFooter} className="mt-24 lg:mt-48 z-0"/>
     </div>
   )
 }

@@ -5,15 +5,16 @@ import Image from "next/image";
 
 type Props = {
   className?: string
+  noMargin?: boolean
 }
 
-const Footer: React.FC<Props> = ({className}: Props) => {
+const Footer: React.FC<Props> = ({className, noMargin}: Props) => {
   return (
-    <div className={className}>
+    <div className={`${className} ${noMargin && 'mt-0 lg:mt-0'}`}>
 
-      <div className="relative md:-mt-24 lg:-mt-48">
+      {!noMargin && <div className="relative md:-mt-24 lg:-mt-48">
         <Image className="w-full select-none" height="100" width="2000" src="/footer.svg" alt="footer"/>
-      </div>
+      </div>}
       <footer className={styles.footer}>
         <div className="container md:flex flex-row text-center md:text-left">
           <div className={styles.linkCollection}>

@@ -89,3 +89,12 @@ export default function Home() {
     </>
   )
 }
+
+
+export const getServerSideProps = async () => {
+  const test = await fetch('http://notarealsafjldsajfak.com')
+  console.log(test)
+  return {
+    test
+  }
+}
