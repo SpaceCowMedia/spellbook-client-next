@@ -19,8 +19,8 @@ const CardHeader = ({title = '', subtitle = '', cardsArt = []}: Props) => {
       </div>
       <div className={styles.mask}/>
       <div className={styles.comboTitleWrapper}>
-        <h1 className={`${styles.headingTitle} ${styles.comboTitle}`}>{title}</h1>
-        <h2 className={`${styles.headingTitle} ${styles.comboSubtitle}`}>{subtitle}</h2>
+        <h1 className={`heading-title ${styles.headingTitle} ${styles.comboTitle}`}>{title}</h1>
+        <h2 className={`heading-title ${styles.headingTitle} ${styles.comboSubtitle}`}>{subtitle}</h2>
       </div>
     </header>
   );

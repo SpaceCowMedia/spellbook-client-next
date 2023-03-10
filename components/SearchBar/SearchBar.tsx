@@ -2,6 +2,7 @@ import React, {FormEvent, useEffect, useState} from "react"
 import Link from 'next/link'
 import styles from './searchBar.module.scss'
 import {useRouter} from "next/router";
+import getAllCombos from "../../lib/get-all-combos";
 
 type Props = {
   onHomepage?: boolean
@@ -15,6 +16,7 @@ const SearchBar: React.FC<Props> = ({onHomepage, className, isAuthenticated}: Pr
 
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
   const [inputValue, setInputValue] = useState(router.query.q)
+  const [numberOfCombos, setNumberOfCombos] = useState(0)
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -23,6 +25,9 @@ const SearchBar: React.FC<Props> = ({onHomepage, className, isAuthenticated}: Pr
 
   useEffect(() => {
     setInputValue(router.query.q)
+    getAllCombos().then((combos) => {
+      setNumberOfCombos(combos.length)
+    })
   }, [router.query.q])
 
   return (
@@ -40,7 +45,7 @@ const SearchBar: React.FC<Props> = ({onHomepage, className, isAuthenticated}: Pr
         <div className="flex flex-grow items-center">
           {!onHomepage && <div className={styles.searchInputIcon} aria-hidden="true" onClick={() => 'focusSearch'}/>}
           <label htmlFor="search-bar-input" className="sr-only text-white" aria-hidden="true">Combo Search</label>
-          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="Seach combos" id="search-bar-input" type="text" className={`${styles.mainSearchInput} ${onHomepage ? 'text-2xl text-center' : 'pl-8 -ml-6'}`}/>
+          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder={`Search ${numberOfCombos ? numberOfCombos+' ' : ''}EDH combos`} id="search-bar-input" type="text" className={`${styles.mainSearchInput} ${onHomepage ? 'text-2xl text-center' : 'pl-8 -ml-6'}`}/>
         </div>
 
         {!onHomepage &&

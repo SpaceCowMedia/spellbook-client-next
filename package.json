@@ -13,6 +13,7 @@
     "@types/node": "18.11.19",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "debounce": "^1.2.1",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
@@ -25,6 +26,7 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@types/debounce": "^1.2.1",
     "@types/pluralize": "^0.0.29",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",

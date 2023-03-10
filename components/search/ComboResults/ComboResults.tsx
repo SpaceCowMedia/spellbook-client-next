@@ -9,10 +9,11 @@ import TextWithMagicSymbol from "../../layout/TextWithMagicSymbol/TextWithMagicS
 import pluralize from "pluralize";
 
 type Props = {
-  results: SearchResultsState | FormattedApiResponse[]
-  paginatedResults: FormattedApiResponse[]
   missingDecklistCards?: Card[]
-}
+} & ({
+  results: SearchResultsState
+  paginatedResults: FormattedApiResponse[]
+} | {results: FormattedApiResponse[], paginatedResults?: never})
 
 const getCardNames = (combo: FormattedApiResponse) => combo.cards.map((card) => card.name)
 
@@ -67,7 +68,7 @@ const ComboResults = ({ results, paginatedResults, missingDecklistCards = [] }: 
 
   return (
     <div className={styles.comboResultsWrapper}>
-      {paginatedResults.map((combo) => (
+      {(paginatedResults || results).map((combo) => (
         <Link href={`/combo/${combo.commanderSpellbookId}`} key={combo.commanderSpellbookId} className={`${styles.comboResult} w-full md:w-1/4`}>
           <div className="flex flex-col">
             <div className="flex items-center flex-grow flex-col bg-dark text-white">

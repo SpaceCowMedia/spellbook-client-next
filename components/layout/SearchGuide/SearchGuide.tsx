@@ -21,8 +21,8 @@ const SearchGuide: React.FC<Props> = ({heading, headingCardName, snippets, child
       <div className="container mt-6 mb-6 pb-4">
         <div className="mt-4 mb-4 flex-none text-center md:flex items-center">
           <ArtCircle cardName={headingCardName} size={7} className="mr-4 md:block hidden"/>
+          <h2 className="heading-title">{heading}</h2>
         </div>
-        <h2 className="heading-title">{heading}</h2>
 
         <div className="flex-none md:flex w-full">
           <div className={`${styles.description} w-full md:w-1/2 flex-grow pl-4 pr-4 md:pl-0`}>
