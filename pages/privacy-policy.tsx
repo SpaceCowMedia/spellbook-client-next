@@ -2,6 +2,7 @@ import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
 import ArtCircle from "../components/layout/ArtCircle/ArtCircle";
 import ExternalLink from "../components/layout/ExternalLink/ExternalLink";
 import styles from './privacy-policy.module.scss'
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 
 type Props = {}
@@ -10,6 +11,7 @@ const PrivacyPolicy: React.FC<Props> = () => {
 
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Privacy Policy" description="Privacy policy for the use of Commander Spellbook."/>
       <div className={`static-page ${styles.privacyPolicyContainer}`}>
         <ArtCircle cardName="Bruvac the Grandiloquent" className="m-auto md:block hidden"/>
         <h1 className="heading-title text-center">Privacy Policy</h1>

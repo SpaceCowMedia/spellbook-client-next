@@ -1,6 +1,6 @@
 import styles from './cardImage.module.scss'
 import FlipperCard from "../FlipperCard/FlipperCard";
-import {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import cardBack from 'assets/images/card-back.png'
 
 type Props = {
@@ -12,10 +12,12 @@ type Props = {
 
 const CardImage = ({img, name, className}: Props) => {
 
+  const imageRef = useRef<HTMLImageElement>(null)
   const [loaded, setLoaded] = useState(false)
   const [readyToFlip, setReadyToFlip] = useState(false)
 
   useEffect(() => {
+    if (imageRef.current && imageRef.current.complete) setLoaded(true)
     setTimeout(() => {
       setReadyToFlip(true)
     }, 300)
@@ -26,7 +28,7 @@ const CardImage = ({img, name, className}: Props) => {
         className={className}
         flipped={loaded && readyToFlip}
         front={<img className={styles.frontCard} src={cardBack.src} alt="" />}
-        back={<img className={styles.frontCard} src={img} alt={name} onLoad={() => setLoaded(true)} />}
+        back={<img ref={imageRef} className={styles.frontCard} src={img} alt={name} onLoad={() => setLoaded(true)} />}
         />
     )
 }

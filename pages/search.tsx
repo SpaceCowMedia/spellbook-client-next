@@ -9,6 +9,7 @@ import {DEFAULT_ORDER, DEFAULT_SORT, DEFAULT_VENDOR} from "../lib/constants";
 import SearchPagination from "../components/search/SearchPagination/SearchPagination";
 import ComboResults from "../components/search/ComboResults/ComboResults";
 import NoCombosFound from "../components/layout/NoCombosFound/NoCombosFound";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 type Props = {}
 
@@ -131,6 +132,7 @@ const Search: React.FC<Props> = ({}: Props) => {
 
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Search Results" description="Search results for all EDH combos matching your query."/>
       <div>
         <h1 className="sr-only">Search Results</h1>
 

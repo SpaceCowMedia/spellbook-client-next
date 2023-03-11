@@ -1,16 +1,22 @@
-import { useRouter } from 'next/router'
 import PageWrapper from "../../components/layout/PageWrapper/PageWrapper";
-import {useEffect, useState} from "react";
-import findById from "../../lib/find-by-id";
+import {findByIdCompressed} from "../../lib/find-by-id";
 import pluralize from "pluralize";
 import CardHeader from "../../components/combo/CardHeader/CardHeader";
 import CardGroup from "../../components/combo/CardGroup/CardGroup";
 import ColorIdentity from "../../components/layout/ColorIdentity/ColorIdentity";
-import colorIdentity from "../../components/layout/ColorIdentity/ColorIdentity";
 import ComboList from "../../components/combo/ComboList/ComboList";
 import styles from './combo.module.scss'
 import ComboSidebarLinks from "../../components/combo/ComboSidebarLinks/ComboSidebarLinks";
-import edhrecLink from "../../components/combo/ComboSidebarLinks/EdhrecLink/EdhrecLink";
+import getAllCombos from "../../lib/get-all-combos";
+import {GetStaticPaths} from "next";
+import {CompressedApiResponse} from "../../lib/types";
+import formatApiResponse from "../../lib/format-api-response";
+import SpellbookHead from "../../components/SpellbookHead/SpellbookHead";
+import React from 'react'
+
+type Props = {
+  compressedCombo: CompressedApiResponse
+}
 
 type Price = {
   tcgplayer: string;
@@ -36,6 +42,7 @@ type ComboData = {
   results: string[];
   edhrecLink: string;
   numberOfDecks: number;
+  commanderSpellbookId: string;
 };
 
 
@@ -53,29 +60,34 @@ const NUMBERS = [
   "ten",
 ];
 
-const Combo = () => {
-  const router = useRouter()
-  const { id } = router.query
 
 
-  const [data, setData] = useState<ComboData>({
-    hasBannedCard: false,
-    hasPreviewedCard: false,
-    link: "",
-    loaded: false,
-    comboNumber: "0",
-    cards: [],
+const Combo = ({compressedCombo}: Props) => {
+  const combo = formatApiResponse([compressedCombo])[0]
+
+  const data: ComboData = {
+    commanderSpellbookId: combo.commanderSpellbookId,
+    edhrecLink: combo.edhrecLink,
+    numberOfDecks: combo.numberOfEDHRECDecks,
+    comboNumber: combo.commanderSpellbookId,
+    hasBannedCard: combo.hasBannedCard,
+    hasPreviewedCard: combo.hasSpoiledCard,
+    link: combo.permalink,
+    cards: combo.cards.map((card) => ({
+      name: card.name,
+      artUrl: card.getImageUrl("artCrop"),
+      oracleImageUrl: card.getImageUrl("oracle"),
+    })),
+    prerequisites: Array.from(combo.prerequisites),
+    steps: Array.from(combo.steps),
+    results: Array.from(combo.results),
+    colorIdentity: Array.from(combo.colorIdentity.colors),
     prices: {
-      tcgplayer: "0.00",
-      cardkingdom: "0.00",
+      tcgplayer: '',
+      cardkingdom: '',
     },
-    colorIdentity: [],
-    prerequisites: [],
-    steps: [],
-    results: [],
-    edhrecLink: "",
-    numberOfDecks: 0,
-  })
+    loaded: true,
+  }
 
   const { cards, numberOfDecks, loaded, colorIdentity, prerequisites, steps, results, hasBannedCard, hasPreviewedCard, link, edhrecLink, comboNumber, prices } = data
 
@@ -85,37 +97,14 @@ const Combo = () => {
   const subtitle = cards.length < 4 ? '' : cards.length === 4 ? `(and ${NUMBERS[1]} other card)` : `(and ${NUMBERS[cards.length - 3]} other cards)`
   const metaData = numberOfDecks > 0 ? [`In ${numberOfDecks} ${pluralize("deck", numberOfDecks)} according to EDHREC.`] : []
 
-  useEffect(() => {
-    if (!id) return
-    findById(id as string)
-      .then((combo) => {
-        setData({
-          ...data,
-          comboNumber: combo.commanderSpellbookId,
-          hasBannedCard: combo.hasBannedCard,
-          hasPreviewedCard: combo.hasSpoiledCard,
-          link: combo.permalink,
-          cards: combo.cards.map((card) => ({
-            name: card.name,
-            artUrl: card.getImageUrl("artCrop"),
-            oracleImageUrl: card.getImageUrl("oracle"),
-          })),
-          prerequisites: Array.from(combo.prerequisites),
-          steps: Array.from(combo.steps),
-          results: Array.from(combo.results),
-          colorIdentity: Array.from(combo.colorIdentity.colors),
-          prices: {
-            tcgplayer: '',
-            cardkingdom: '',
-          },
-          loaded: true,
-        })
-      })
-      .catch(() => router.push('/combo-not-found'))
-  }, [id])
-
   return (
     <PageWrapper>
+      <SpellbookHead
+        title={`${title} ${subtitle}`}
+        description={results.reduce((str, result) => str + `\n  * ${result}`, "Combo Results:")}
+        imageUrl={cardArts[0]}
+        useCropDimensions
+      />
       <CardHeader cardsArt={cardArts} title={title} subtitle={subtitle} />
       {loaded && <CardGroup cards={cards} />}
       <div className="container md:flex flex-row">
@@ -194,3 +183,31 @@ const Combo = () => {
 
 
 export default Combo
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const combos = await getAllCombos()
+  const paths = combos.map((combo) => ({
+    params: { id: `${combo.commanderSpellbookId}` },
+  }))
+
+  return { paths, fallback: false }
+}
+
+export const getStaticProps = async ({ params }: {params: {id: string}}) => {
+  const combo = await findByIdCompressed(params.id)
+
+  if (!combo) {
+    return {
+      redirect: {
+        destination: '/combo-not-found',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {
+      compressedCombo: combo,
+    },
+  }
+}

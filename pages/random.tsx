@@ -4,6 +4,7 @@ import random from "../lib/random";
 import {useRouter} from "next/router"
 import {Url} from "url";
 import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 const Random = () => {
 
@@ -24,6 +25,7 @@ const Random = () => {
 
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Random" description="Find a random EDH combo on Commander Spellbook."/>
       <SplashPage
         title="Randomizing"
         flavor="Ever try to count hyperactive schoolchildren while someone shouts random numbers in your ear? It’s like that."

@@ -1,6 +1,6 @@
 import styles from './comboList.module.scss'
 import TextWithMagicSymbol from "../../layout/TextWithMagicSymbol/TextWithMagicSymbol";
-import {useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import PlaceholderText from "../../layout/PlaceholderText/PlaceholderText";
 
 type Props = {

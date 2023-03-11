@@ -8,6 +8,7 @@ import COLOR_AUTOCOMPLETES from "../lib/colorAutocompletes";
 import styles from './advanced-search.module.scss'
 import RadioSearchInput from "../components/advancedSearch/RadioSearchInput/RadioSearchInput";
 import {useRouter} from "next/router";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 const CARD_OPERATOR_OPTIONS = [
   {
@@ -378,6 +379,7 @@ const AdvancedSearch = () => {
 
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Advanced Search" description="Advanced search form for searching through Commander Spellbook EDH combos."/>
       <div className={`${styles.container} container`}>
         <ArtCircle cardName="Tribute Mage" className="m-auto md:block hidden"/>
         <h1 className="heading-title">Advanced Search</h1>

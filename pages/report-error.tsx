@@ -3,12 +3,14 @@ import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
 import ArtCircle from "../components/layout/ArtCircle/ArtCircle";
 import ExternalLink from "../components/layout/ExternalLink/ExternalLink";
 import styles from './report-error.module.scss'
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 type Props = {}
 
 const ReportError: React.FC<Props> = ({}: Props) => {
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Report Error" description="Report an error in a combo on Commander Spellbook through our discord."/>
       <div className={`static-page ${styles.reportErrorContainer}`}>
         <ArtCircle cardName="Go Blank" className="m-auto md:block hidden"/>
         <h1 className="heading-title">Report an Error</h1>

@@ -5,6 +5,7 @@ import ArtCircle from "../components/layout/ArtCircle/ArtCircle";
 import Link from "next/link";
 import SearchGuide from "../components/layout/SearchGuide/SearchGuide";
 import ExternalLink from "../components/layout/ExternalLink/ExternalLink";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 type Props = {}
 
@@ -232,6 +233,7 @@ const DATA = {
 const SyntaxGuide:React.FC <Props> = ({}: Props) => {
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Syntax Guide" description="Browse our search syntax for advanced EDH combo queries."/>
       <div className={styles.syntaxGuideContainer}>
         <div className="container pt-6 mb-6">
           <ArtCircle cardName="Goblin Guide" className="m-auto md:block hidden" />

@@ -4,12 +4,14 @@ import ExternalLink from "../components/layout/ExternalLink/ExternalLink";
 import TextWithMagicSymbol from "../components/layout/TextWithMagicSymbol/TextWithMagicSymbol";
 import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
 import styles from './style-guide.module.scss'
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 type Props = {}
 
 const StyleGuide: React.FC<Props> = ({}: Props) => {
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Style Guide" description="Learn our format for submitting EDH combos."/>
       <div className={`static-page ${styles.styleGuideContainer}`}>
         <ArtCircle cardName="Stet, Draconic Proofreader" className="m-auto md:block hidden"/>
         <h1 className="heading-title">The Official™ Commander Spellbook Style Guide</h1>

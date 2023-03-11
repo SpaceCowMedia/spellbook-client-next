@@ -68,8 +68,8 @@ const TextWithMagicSymbol: React.FC<Props> = ({text, cardsInCombo = [], includeC
         const manaMatch = value.match(/:mana([^:]+):|{([^}]+)}/);
 
         if (manaMatch) {
-          const manaSymbol = (manaMatch[1] || manaMatch[2]).replace("/", "");
-
+          let manaSymbol = (manaMatch[1] || manaMatch[2]).replace("/", "");
+          if (manaSymbol[0] === 'p') manaSymbol = manaSymbol[1] + manaSymbol[0] // This is a hack to swap the p and other symbol for phyrexian mana
           return {
             nodeType: "image",
             value: Scryfall.getSymbolUrl(manaSymbol),

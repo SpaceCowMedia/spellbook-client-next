@@ -8,6 +8,7 @@ import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
 import ArtCircle from "../components/layout/ArtCircle/ArtCircle";
 import ComboResults from "../components/search/ComboResults/ComboResults";
 import ColorIdentityPicker from "../components/layout/ColorIdentityPicker/ColorIdentityPicker";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 const LOCAL_STORAGE_DECK_STORAGE_KEY =
   "commander-spellbook-combo-finder-last-decklist"
@@ -90,6 +91,7 @@ const FindMyCombos = () => {
 
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: Find My Combos" description="Input a decklist to generate all possible combos in your deck as well as combo suggestions." />
       <div className={`${styles.findMyCombosContainer} static-page`}>
         <ArtCircle cardName="Exploration" className="m-auto md:block hidden"/>
         <h1 className="heading-title text-center">Find My Combos</h1>

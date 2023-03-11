@@ -3,12 +3,14 @@ import ArtCircle from "../components/layout/ArtCircle/ArtCircle";
 import ExternalLink from "../components/layout/ExternalLink/ExternalLink";
 import styles from './about.module.scss'
 import PageWrapper from "../components/layout/PageWrapper/PageWrapper";
+import SpellbookHead from "../components/SpellbookHead/SpellbookHead";
 
 type Props = {}
 
 const About: React.FC<Props> = ({}: Props) => {
   return (
     <PageWrapper>
+      <SpellbookHead title="Commander Spellbook: About" description="About the Commander Spellbook project to record EDH combos."/>
       <div className={`static-page ${styles.aboutContainer}`}>
         <ArtCircle cardName="Codie, Vociferous Codex"  className="m-auto md:block hidden"/>
         <h1 className="heading-title">About Commander Spellbook</h1>
